@@ -1,0 +1,79 @@
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>990</x><y>627</y><w>210</w><h>130</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
+DataBaseAccess
+--
+- getPokedex(): List&lt;Pokemon&gt;
+- createPokemon(): void
+- updatePokemon(): void
+- deletePokemon(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>1340</x><y>267</y><w>360</w><h>260</h></coordinates><panel_attributes>bg=red
+Pokedex Application using JDBC
+I'm going to create a CRUD application where users
+can save their own pokemon and give it a name.
+The pictures/names will be extracted from the pokedex
+Rest API that can be found in the internet.
+Saved pokemon data will be stored inside 3 different
+Databases.
+
+Databases:
+- MySQL
+- SQLite
+- MongoDB
+
+Links: 
+- https://pokeapi.co/</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1090</x><y>287</y><w>30</w><h>360</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;340</additional_attributes></element><element><id>UMLPackage</id><coordinates><x>1340</x><y>557</y><w>360</w><h>440</h></coordinates><panel_attributes>Model
+--
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLPackage</id><coordinates><x>0</x><y>357</y><w>1230</w><h>640</h></coordinates><panel_attributes>DAO
+--
+bg=black</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>440</x><y>817</y><w>330</w><h>130</h></coordinates><panel_attributes>DAOMongoDB
+--
++ getPokedex()
++ getPokemon(Long pokemonID)
++ createPokemon(Pokemon pokemon)
++ deletePokemon(Long pokemonID)
++ updatePokemon(Long pokemonID, Pokemon pokemon)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>677</y><w>250</w><h>220</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>230;10;120;10;120;200;10;200</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1410</x><y>627</y><w>210</w><h>130</h></coordinates><panel_attributes>Pokedex
+--
+- pokedex:ArrayList&lt;Pokemon&gt;
+-
++ Pokedex(dao:DataBaseAccess)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>60</x><y>817</y><w>260</w><h>130</h></coordinates><panel_attributes>CRUDMongoDB
+--
+- createPokemon(entry: Resultset): Pokemon
+- readPokemon(entry: Resultset): void
+- updatePokemon(entry: Resultset): void
+- deletePokemon(entry: Resultset): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1410</x><y>817</y><w>210</w><h>140</h></coordinates><panel_attributes>Pokemon
+--
+- pokemonId: Long
+- pokemon: String
+- name: String
+- age: Int
+--
++ setupPokemon()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1190</x><y>677</y><w>240</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>220;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1510</x><y>747</y><w>40</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=*</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>60</x><y>427</y><w>260</w><h>130</h></coordinates><panel_attributes>CRUDMySQL
+--
+- createPokemon(entry: Resultset): Pokemon
+- readPokemon(entry: Resultset): void
+- updatePokemon(entry: Resultset): void
+- deletePokemon(entry: Resultset): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>60</x><y>627</y><w>260</w><h>130</h></coordinates><panel_attributes>CRUDSQLite
+--
+- createPokemon(entry: Resultset): Pokemon
+- readPokemon(entry: Resultset): void
+- updatePokemon(entry: Resultset): void
+- deletePokemon(entry: Resultset): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>440</x><y>627</y><w>330</w><h>130</h></coordinates><panel_attributes>DAOSQLite
+--
++ getPokedex()
++ getPokemon(Long pokemonID)
++ createPokemon(Pokemon pokemon)
++ deletePokemon(Long pokemonID)
++ updatePokemon(Long pokemonID, Pokemon pokemon)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>440</x><y>427</y><w>330</w><h>130</h></coordinates><panel_attributes>DAOMySQL
+--
++ getPokedex()
++ getPokemon(Long pokemonID)
++ createPokemon(Pokemon pokemon)
++ deletePokemon(Long pokemonID)
++ updatePokemon(Long pokemonID, Pokemon pokemon)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>477</y><w>150</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes>130;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>857</y><w>150</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes>130;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>677</y><w>150</w><h>40</h></coordinates><panel_attributes></panel_attributes><additional_attributes>130;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>677</y><w>250</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>230;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>477</y><w>250</w><h>230</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>230;210;120;210;120;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1000</x><y>27</y><w>210</w><h>60</h></coordinates><panel_attributes>PokedexApplication
+--
++main(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1000</x><y>167</y><w>210</w><h>130</h></coordinates><panel_attributes>PokedexController
+--
+- getPokedex(): List&lt;Pokemon&gt;
+- createPokemon(): void
+- updatePokemon(): void
+- deletePokemon(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1090</x><y>77</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element></diagram>
