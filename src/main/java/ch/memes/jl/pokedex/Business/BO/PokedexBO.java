@@ -1,15 +1,14 @@
-package ch.memes.jl.pokedex.Data.Entity;
+package ch.memes.jl.pokedex.Business.BO;
 
 import ch.memes.jl.pokedex.Data.DAO.DAO;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import ch.memes.jl.pokedex.Data.Entity.Pokemon;
 
-import javax.persistence.Entity;
 import java.util.ArrayList;
 
-public class Pokedex {
+public class PokedexBO {
     private ArrayList<Pokemon> pokedex;
 
-    public Pokedex(DAO dao) {
+    public PokedexBO(DAO dao) {
         super();
         pokedex = new ArrayList<Pokemon>();
         dao.getPokedex(pokedex);

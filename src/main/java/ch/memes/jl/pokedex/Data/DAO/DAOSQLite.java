@@ -22,6 +22,8 @@ public class DAOSQLite implements DAO {
             while (rs.next()) {
                 pokedex.add(CRUDSQLite.createPokemon(rs));
             }
+
+            return pokedex;
         } catch (SQLException err) {
             err.printStackTrace();
         } catch (ClassNotFoundException e) {
