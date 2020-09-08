@@ -21,7 +21,7 @@ public class DAOSQLiteImpl implements DAO {
             ResultSet rs = s.executeQuery("SELECT * FROM Pokedex");
 
             while (rs.next()) {
-                list.add(createPokemon(rs));
+                list.add(generate(rs));
             }
         } catch (SQLException | ClassNotFoundException err) {
             err.printStackTrace();
@@ -39,7 +39,7 @@ public class DAOSQLiteImpl implements DAO {
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Pokedex WHERE pokemonID = ?");
             pstmt.setLong(1, id);
             ResultSet rs = pstmt.executeQuery();
-            pokemon = createPokemon(rs);
+            pokemon = generate(rs);
 
         } catch (SQLException | ClassNotFoundException err) {
             err.printStackTrace();
@@ -49,15 +49,17 @@ public class DAOSQLiteImpl implements DAO {
 
     @Override
     public ArrayList<Pokemon> createPokemon(Pokemon pokemon) {
-        String sql = "INSERT INTO Pokedex(pokemon,name,age) VALUES(?,?,?)";
+        String sql = "INSERT INTO Pokedex(pokemon,name,description,type1,type2) VALUES(?,?,?,?,?)";
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection(path);
-            Statement s = conn.createStatement();
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, pokemon.getPokemon());
             pstmt.setString(2, pokemon.getName());
-            pstmt.setInt(3, pokemon.getAge());
+            pstmt.setString(3, pokemon.getDescription());
+            pstmt.setString(4, pokemon.getType1());
+            pstmt.setString(5, pokemon.getType2());
+            pstmt.executeUpdate();
 
         } catch (SQLException | ClassNotFoundException err) {
             err.printStackTrace();
@@ -67,7 +69,7 @@ public class DAOSQLiteImpl implements DAO {
 
     @Override
     public ArrayList<Pokemon> updatePokemon(Long id, Pokemon pokemon) {
-        String sql = "UPDATE Pokedex SET pokemon=?, name=?, age=? WHERE pokemonID=?";
+        String sql = "UPDATE Pokedex SET pokemon=?, name=?, description=?, type1=?, type2=? WHERE pokemonID=?";
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection(path);
@@ -75,8 +77,10 @@ public class DAOSQLiteImpl implements DAO {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, pokemon.getPokemon());
             pstmt.setString(2, pokemon.getName());
-            pstmt.setInt(3, pokemon.getAge());
-            pstmt.setLong(4, id);
+            pstmt.setString(3, pokemon.getDescription());
+            pstmt.setString(4, pokemon.getType1());
+            pstmt.setString(5, pokemon.getType2());
+            pstmt.setLong(6, id);
             pstmt.executeUpdate();
 
         } catch (ClassNotFoundException e) {
@@ -108,12 +112,14 @@ public class DAOSQLiteImpl implements DAO {
         return getPokedex();
     }
 
-    public Pokemon createPokemon(ResultSet entry) throws SQLException {
+    public Pokemon generate(ResultSet entry) throws SQLException {
         Pokemon pokemon = new Pokemon();
         pokemon.setPokemonID(entry.getLong("pokemonID"));
         pokemon.setPokemon(entry.getString("pokemon"));
         pokemon.setName(entry.getString("name"));
-        pokemon.setAge(entry.getInt("age"));
+        pokemon.setDescription(entry.getString("description"));
+        pokemon.setType1(entry.getString("type1"));
+        pokemon.setType2(entry.getString("type2"));
         return pokemon;
     }
 }

@@ -12,7 +12,9 @@ public class Pokemon {
     private Long pokemonID;
     private String pokemon;
     private String name;
-    private int age;
+    private String description;
+    private String type1;
+    private String type2;
 
     public Pokemon() {
         super();
@@ -42,11 +44,27 @@ public class Pokemon {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
+    public String getDescription() {
+        return description;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getType1() {
+        return type1;
+    }
+
+    public void setType1(String type1) {
+        this.type1 = type1;
+    }
+
+    public String getType2() {
+        return type2;
+    }
+
+    public void setType2(String type2) {
+        this.type2 = type2;
     }
 }
