@@ -81,9 +81,9 @@ function App() {
             ))}
         </ul>
 
-        <Form handleSubmit={this.handleSubmit()} pokemon={pokemon} pokemonHandler={this.pokemonHandler()} name={name}
-            nameHandler={nameHandler()} description={description} descriptionHandler={descriptionHandler()}
-        type1={type1} type1Handler={type1Handler()} type2={type2} type2Handler={type2Handler()}/>
+        <Form submit={handleSubmit} pokemon={pokemon} onChangePokemonHandler={pokemonHandler} name={name}
+            nameHandler={nameHandler} description={description} descriptionHandler={descriptionHandler}
+        type1={type1} type1Handler={type1Handler} type2={type2} type2Handler={type2Handler}/>
     </div>
   );
 }
