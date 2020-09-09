@@ -6,6 +6,12 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Popup from "reactjs-popup";
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles({
     root: {
@@ -31,6 +37,7 @@ export default function OutlinedCard({ pokemon, deletePokemon, updatePokemon }) 
     const [updatedDescription, setUpdatedDescription] = useState(pokemon.description);
     const [updatedType1, setUpdatedType1] = useState(pokemon.type1);
     const [updatedType2, setUpdatedType2] = useState(pokemon.type2);
+    const [open, setOpen] = React.useState(false);
 
     const updatedPokemonHandler = event => {
         event.preventDefault();
@@ -57,6 +64,14 @@ export default function OutlinedCard({ pokemon, deletePokemon, updatePokemon }) 
         setUpdatedType2(event.target.value);
     }
 
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     function confirmation(pokemonID, name) {
         if (window.confirm(`Are you sure you want to delete ${name}?`)) {
             deletePokemon(pokemonID);
@@ -66,8 +81,6 @@ export default function OutlinedCard({ pokemon, deletePokemon, updatePokemon }) 
     }
 
     const updateSubmit = event => {
-        event.preventDefault();
-
         const updatedData = {
             pokemon: updatedPokemon,
             name: updatedName,
@@ -96,53 +109,71 @@ export default function OutlinedCard({ pokemon, deletePokemon, updatePokemon }) 
                 </Typography>
             </CardContent>
             <CardActions>
-                <Popup trigger={<button size="small">Update</button>} position="right center">
-                    <div>
-                        <form onSubmit={updateSubmit}>
-                            <div>
-                                <label>Pokemon</label>
-                                <input
-                                    type="text"
-                                    value={updatedPokemon}
-                                    onChange={updatedPokemonHandler}
-                                />
-                            </div>
-                            <div>
-                                <label>Name</label>
-                                <input
-                                    type="text"
-                                    value={updatedName}
-                                    onChange={updatedNameHandler}
-                                />
-                            </div>
-                            <div>
-                                <label>Description</label>
-                                <input
-                                    type="text"
-                                    value={updatedDescription}
-                                    onChange={updatedDescriptionHandler}
-                                />
-                            </div>
-                            <div>
-                                <label>Type1</label>
-                                <input
-                                    type="text"
-                                    value={updatedType1}
-                                    onChange={updatedType1Handler}
-                                />
-                            </div>
-                            <div>
-                                <label>Type2</label>
-                                <input
-                                    type="text"
-                                    value={updatedType2}
-                                    onChange={updatedType2Handler}
-                                />
-                            </div>
-                            <button type="submit">Add</button>
-                        </form>
-                    </div>
-                </Popup>
+                <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                    Update
+                </Button>
+                <div>
+                    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Update</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Update {pokemon.name}
+                            </DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                label="Pokemon"
+                                type="text"
+                                value={updatedPokemon}
+                                onChange={updatedPokemonHandler}
+                                fullWidth
+                            />
+                            <TextField
+                                margin="dense"
+                                label="Name"
+                                type="text"
+                                value={updatedName}
+                                onChange={updatedNameHandler}
+                                fullWidth
+                            />
+                            <TextField
+                                margin="dense"
+                                label="Description"
+                                type="text"
+                                value={updatedDescription}
+                                onChange={updatedDescriptionHandler}
+                                fullWidth
+                            />
+                            <TextField
+                                margin="dense"
+                                label="Type1"
+                                type="text"
+                                value={updatedType1}
+                                onChange={updatedType1Handler}
+                                fullWidth
+                            />
+                            <TextField
+                                margin="dense"
+                                label="Type2"
+                                type="text"
+                                value={updatedType2}
+                                onChange={updatedType2Handler}
+                                fullWidth
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose} color="primary">
+                                Cancel
+                            </Button>
+                            <Button onClick={() => {
+                                updateSubmit();
+                                handleClose();
+                            }} color="primary">
+                                Subscribe
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
                 <Button size="small" onClick={() => confirmation(pokemon.pokemonID, pokemon.name)}>Delete</Button>
             </CardActions>
         </Card>
