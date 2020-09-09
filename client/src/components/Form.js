@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Autosuggest from 'react-autosuggest';
 
 const Form = (props) => {
 
@@ -44,7 +43,7 @@ const Form = (props) => {
                     />
                 </div>
                 <div>
-                    <label>description</label>
+                    <label>Description</label>
                     <input
                         type="text"
                         value={props.description}
@@ -52,7 +51,7 @@ const Form = (props) => {
                     />
                 </div>
                 <div>
-                    <label>type1</label>
+                    <label>Type1</label>
                     <input
                         type="text"
                         value={props.type1}
@@ -60,7 +59,7 @@ const Form = (props) => {
                     />
                 </div>
                 <div>
-                    <label>type2</label>
+                    <label>Type2</label>
                     <input
                         type="text"
                         value={props.type2}

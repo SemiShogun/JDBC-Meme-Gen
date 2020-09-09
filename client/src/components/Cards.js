@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     }
 });
 
-const Cards = ({ pokedex, deletePokemon }) => {
+const Cards = ({ pokedex, deletePokemon, updatePokemon }) => {
     const classes = useStyles();
 
     return (
@@ -22,7 +22,7 @@ const Cards = ({ pokedex, deletePokemon }) => {
                 className={classes.gridContainer}>
             {pokedex.map(pokemon => (
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card pokemon={pokemon} deletePokemon={deletePokemon}/>
+                    <Card pokemon={pokemon} deletePokemon={deletePokemon} updatePokemon={updatePokemon}/>
                 </Grid>
             ))}
             </Grid>

@@ -79,13 +79,22 @@ function App() {
             });
     }
 
-    const deletePokemon = pokemonID = > {
-        event.preventDefault();
-
+    const deletePokemon = pokemonID => {
         axios
-            .delete('/api/sqlite/pokedex/{pokemonID}')
+            .delete(`/api/sqlite/pokedex/${pokemonID}`)
             .then(res => {
-                setPokemons(res.data)
+                setPokedex(res.data)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    const updatePokemon = (pokemonID, pokemon) => {
+        axios
+            .put(`/api/sqlite/pokedex/${pokemonID}`, pokemon)
+            .then(res => {
+                setPokedex(res.data)
             })
             .catch(err => {
                 console.log(err);
@@ -98,7 +107,7 @@ function App() {
         <Form submit={handleSubmit} pokemons={pokemons} pokemon={newPokemon} onChangePokemonHandler={pokemonHandler} name={newName}
               onChangeNameHandler={nameHandler} description={newDescription} onChangeDescriptionHandler={descriptionHandler}
               type1={newType1} onChangeType1Handler={type1Handler} type2={newType2} onChangeType2Handler={type2Handler}/>
-        <Cards pokedex={pokedex} deletePokemon={deletePokemon}/>
+        <Cards pokedex={pokedex} deletePokemon={deletePokemon} updatePokemon={updatePokemon}/>
     </div>
   );
 }
