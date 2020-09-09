@@ -73,7 +73,6 @@ public class DAOSQLiteImpl implements DAO {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection conn = DriverManager.getConnection(path);
-            Statement s = conn.createStatement();
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, pokemon.getPokemon());
             pstmt.setString(2, pokemon.getName());

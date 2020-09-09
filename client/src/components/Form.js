@@ -1,19 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import Autosuggest from 'react-autosuggest';
 
 const Form = (props) => {
 
+    // Filters suggestions
+    const getSuggestions = value => {
+        const inputValue = value.trim().toLowerCase();
+        const inputLength = inputValue.length;
+
+        return inputLength === 0 ? [] : props.pokemons.filter(pokemon =>
+            pokemon.name.toLowerCase().slice(0, inputLength) === inputValue
+        );
+    }
+
+    // Populating the input.
+    const getSuggestionValue = suggestion => suggestion.results;
+
+    const renderSuggestion = suggestion => (
+        <div>
+            {suggestion.results}
+        </div>
+    );
+
     return (
-        <div className="App">
+        <div>
             <h1>Form</h1>
 
-            <form onSubmit={props.handleSubmit}>
+            <form onSubmit={props.submit}>
                 <div>
                     <label>Pokemon</label>
                     <input
                         type="text"
                         value={props.pokemon}
-                        onChange={e => props.pokemonHandler(e.target.value)}
+                        onChange={props.onChangePokemonHandler}
                     />
                 </div>
                 <div>
@@ -21,7 +40,7 @@ const Form = (props) => {
                     <input
                         type="text"
                         value={props.name}
-                        onChange={e => props.nameHandler(e.target.value)}
+                        onChange={props.onChangeNameHandler}
                     />
                 </div>
                 <div>
@@ -29,7 +48,7 @@ const Form = (props) => {
                     <input
                         type="text"
                         value={props.description}
-                        onChange={e => props.descriptionHandler(e.target.value)}
+                        onChange={props.onChangeDescriptionHandler}
                     />
                 </div>
                 <div>
@@ -37,7 +56,7 @@ const Form = (props) => {
                     <input
                         type="text"
                         value={props.type1}
-                        onChange={e => props.type1Handler(e.target.value)}
+                        onChange={props.onChangeType1Handler}
                     />
                 </div>
                 <div>
@@ -45,7 +64,7 @@ const Form = (props) => {
                     <input
                         type="text"
                         value={props.type2}
-                        onChange={e => props.type2Handler(e.target.value)}
+                        onChange={props.onChangeType2Handler}
                     />
                 </div>
                 <button type="submit">Add</button>
