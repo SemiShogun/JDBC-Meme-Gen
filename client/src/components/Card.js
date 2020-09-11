@@ -5,12 +5,10 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Popup from "reactjs-popup";
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles({
@@ -96,10 +94,10 @@ export default function OutlinedCard({ pokemon, deletePokemon, updatePokemon }) 
         <Card className={classes.root} variant="outlined">
             <CardContent>
                 <Typography variant="h5" component="h2">
-                    {pokemon.name}
+                    {pokemon.pokemon}
                 </Typography>
                 <Typography variant="h7" component="h2">
-                    {pokemon.pokemon}
+                    {pokemon.name}
                 </Typography>
                 <Typography className={classes.pos} color="textSecondary">
                     {pokemon.type1} {pokemon.type2}
@@ -114,11 +112,8 @@ export default function OutlinedCard({ pokemon, deletePokemon, updatePokemon }) 
                 </Button>
                 <div>
                     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                        <DialogTitle id="form-dialog-title">Update</DialogTitle>
+                        <DialogTitle id="form-dialog-title">Update {pokemon.name}</DialogTitle>
                         <DialogContent>
-                            <DialogContentText>
-                                Update {pokemon.name}
-                            </DialogContentText>
                             <TextField
                                 autoFocus
                                 margin="dense"
@@ -169,7 +164,7 @@ export default function OutlinedCard({ pokemon, deletePokemon, updatePokemon }) 
                                 updateSubmit();
                                 handleClose();
                             }} color="primary">
-                                Subscribe
+                                Update
                             </Button>
                         </DialogActions>
                     </Dialog>

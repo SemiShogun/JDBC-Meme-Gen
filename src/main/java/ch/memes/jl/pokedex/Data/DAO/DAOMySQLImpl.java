@@ -1,4 +1,4 @@
 package ch.memes.jl.pokedex.Data.DAO;
 
-public class DAOMySQLImpl {
+public class  DAOMySQLImpl {
 }

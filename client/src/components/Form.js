@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Input from "@material-ui/core/Input";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 const Form = (props) => {
 
@@ -27,46 +33,55 @@ const Form = (props) => {
 
             <form onSubmit={props.submit}>
                 <div>
-                    <label>Pokemon</label>
-                    <input
+                    <TextField
+                        label="Pokemon"
                         type="text"
                         value={props.pokemon}
+                        style={{ width: 400 }}
                         onChange={props.onChangePokemonHandler}
                     />
                 </div>
                 <div>
-                    <label>Name</label>
-                    <input
+                    <TextField
+                        label="Name"
                         type="text"
                         value={props.name}
+                        style={{ width: 400 }}
                         onChange={props.onChangeNameHandler}
                     />
                 </div>
                 <div>
-                    <label>Description</label>
-                    <input
+                    <TextField
+                        label="Description"
                         type="text"
+                        multiline
                         value={props.description}
+                        rows={4}
+                        style={{ width: 400 }}
                         onChange={props.onChangeDescriptionHandler}
                     />
                 </div>
                 <div>
-                    <label>Type1</label>
-                    <input
+                    <TextField
+                        label="Type1"
                         type="text"
                         value={props.type1}
+                        style={{ width: 400 }}
                         onChange={props.onChangeType1Handler}
                     />
                 </div>
                 <div>
-                    <label>Type2</label>
-                    <input
+                    <TextField
+                        label="Type2"
                         type="text"
                         value={props.type2}
+                        style={{ width: 400 }}
                         onChange={props.onChangeType2Handler}
                     />
                 </div>
-                <button type="submit">Add</button>
+                <Button type="submit" variant="contained" color="primary">
+                    Add
+                </Button>
             </form>
         </div>
     );
