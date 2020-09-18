@@ -1,45 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import AddIcon from '@material-ui/icons/Add';
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const Form = (props) => {
 
-    // Filters suggestions
-    const getSuggestions = value => {
-        const inputValue = value.trim().toLowerCase();
-        const inputLength = inputValue.length;
-
-        return inputLength === 0 ? [] : props.pokemons.filter(pokemon =>
-            pokemon.name.toLowerCase().slice(0, inputLength) === inputValue
-        );
-    }
-
-    // Populating the input.
-    const getSuggestionValue = suggestion => suggestion.results;
-
-    const renderSuggestion = suggestion => (
-        <div>
-            {suggestion.results}
-        </div>
-    );
+    const pokemonTypes = [
+        "Normal",
+        "Fire",
+        "Water",
+        "Grass",
+        "Electric",
+        "Ice",
+        "Fighting",
+        "Poison",
+        "Ground",
+        "Flying",
+        "Psychic",
+        "Bug",
+        "Rock",
+        "Ghost",
+        "Dark",
+        "Dragon",
+        "Steel",
+        "Fairy"
+    ];
 
     return (
         <div>
-            <h1>Form</h1>
+            <h1>Create a pokemon</h1>
 
             <form onSubmit={props.submit}>
                 <div>
-                    <TextField
-                        label="Pokemon"
-                        type="text"
-                        value={props.pokemon}
-                        style={{ width: 400 }}
-                        onChange={props.onChangePokemonHandler}
-                    />
+                    <FormControl>
+                        <InputLabel id="demo-simple-select-helper-label">Pokemon</InputLabel>
+                        <Select
+                            id="demo-simple-select-helper"
+                            onChange={props.onChangePokemonHandler}
+                            style={{ width: 400 }}>
+                            {props.pokemons.map(pokemon => (
+                                <MenuItem value={pokemon.name}>
+                                    <em>{pokemon.name}</em>
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <FormHelperText>Choose your pokemon</FormHelperText>
+                    </FormControl>
                 </div>
                 <div>
                     <TextField
@@ -62,25 +73,40 @@ const Form = (props) => {
                     />
                 </div>
                 <div>
-                    <TextField
-                        label="Type1"
-                        type="text"
-                        value={props.type1}
-                        style={{ width: 400 }}
-                        onChange={props.onChangeType1Handler}
-                    />
+                    <FormControl>
+                        <InputLabel id="demo-simple-select-helper-label">Type1</InputLabel>
+                        <Select
+                            id="demo-simple-select-helper"
+                            onChange={props.onChangeType1Handler}
+                            style={{ width: 400 }}>
+                            {pokemonTypes.map((type, index) => (
+                                <MenuItem key={index} value={type}>
+                                    <em>{type}</em>
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <FormHelperText>Choose your First type</FormHelperText>
+                    </FormControl>
                 </div>
                 <div>
-                    <TextField
-                        label="Type2"
-                        type="text"
-                        value={props.type2}
-                        style={{ width: 400 }}
-                        onChange={props.onChangeType2Handler}
-                    />
+                    <FormControl>
+                        <InputLabel id="demo-simple-select-helper-label">Type2</InputLabel>
+                        <Select
+                            id="demo-simple-select-helper"
+                            onChange={props.onChangeType2Handler}
+                            style={{ width: 400 }}>
+                            {pokemonTypes.map((type, index) => (
+                                <MenuItem key={index} value={type}>
+                                    <em>{type}</em>
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <FormHelperText>Choose your Second Type</FormHelperText>
+                    </FormControl>
                 </div>
+                <br/>
                 <Button type="submit" variant="contained" color="primary">
-                    Add
+                    <AddIcon/>
                 </Button>
             </form>
         </div>

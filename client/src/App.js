@@ -3,10 +3,11 @@ import axios from 'axios';
 import './App.css';
 import Form from "./components/Form";
 import Cards from "./components/Cards";
-import soundfile from './audio/Route201.mp3';
+import soundfile from './audio/Theme.mp3';
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
 
 function App() {
     const [pokedex, setPokedex] = useState([]);
@@ -28,9 +29,9 @@ function App() {
                 console.log(err);
             });
         axios
-            .get('https://pokeapi.co/api/v2/pokemon')
+            .get('https://pokeapi.co/api/v2/pokemon?limit=149')
             .then(res => {
-                setPokemons(res.data)
+                setPokemons(res.data.results);
             })
             .catch(err => {
                 console.log(err);
@@ -121,10 +122,10 @@ function App() {
             <Grid spacing={2} justify="center" alignItems="center">
                 <h1>Music</h1>
                 <Button type="submit" onClick={playAudio} variant="contained" color="primary" style={{margin: 10}}>
-                    Play
+                    <PlayArrowIcon/>
                 </Button>
                 <Button type="submit" onClick={pauseAudio} variant="contained" color="primary" style={{margin: 10}}>
-                    Pause
+                    <PauseIcon/>
                 </Button>
             </Grid>
             <Grid spacing={2} justify="center">

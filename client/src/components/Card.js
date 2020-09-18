@@ -10,6 +10,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DeleteIcon from '@material-ui/icons/Delete';
+import UpdateIcon from '@material-ui/icons/Update';
 
 const useStyles = makeStyles({
     root: {
@@ -108,7 +110,7 @@ export default function OutlinedCard({ pokemon, deletePokemon, updatePokemon }) 
             </CardContent>
             <CardActions>
                 <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                    Update
+                    <UpdateIcon/>
                 </Button>
                 <div>
                     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -169,7 +171,9 @@ export default function OutlinedCard({ pokemon, deletePokemon, updatePokemon }) 
                         </DialogActions>
                     </Dialog>
                 </div>
-                <Button size="small" onClick={() => confirmation(pokemon.pokemonID, pokemon.name)}>Delete</Button>
+                <Button variant="outlined" color="secondary" onClick={() => confirmation(pokemon.pokemonID, pokemon.name)}>
+                    <DeleteIcon />
+                </Button>
             </CardActions>
         </Card>
     );
