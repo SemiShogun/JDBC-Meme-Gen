@@ -7,15 +7,15 @@ import java.sql.*;
 import java.util.ArrayList;
 
 @Repository
-public class DAOMySQLImpl implements DAO {
+public class DAOCSVImpl implements DAO {
 
-    private String path = "jdbc:mysql://localhost:3306/pokedex";
+    private String path = "jdbc:relique:csv:src/main/resources/pokedex.csv";
 
     @Override
     public ArrayList<Pokemon> getPokedex() {
         ArrayList<Pokemon> list = new ArrayList<Pokemon>();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.relique.jdbc.csv.CsvDriver");
             Connection conn = DriverManager.getConnection(path);
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM Pokedex");
@@ -33,7 +33,7 @@ public class DAOMySQLImpl implements DAO {
     public Pokemon getPokemon(Long id) {
         Pokemon pokemon = new Pokemon();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.relique.jdbc.csv.CsvDriver");
             Connection conn = DriverManager.getConnection(path);
             Statement s = conn.createStatement();
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Pokedex WHERE pokemonID = ?");
@@ -51,7 +51,7 @@ public class DAOMySQLImpl implements DAO {
     public ArrayList<Pokemon> createPokemon(Pokemon pokemon) {
         String sql = "INSERT INTO Pokedex(pokemon,name,description,type1,type2) VALUES(?,?,?,?,?)";
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.relique.jdbc.csv.CsvDriver");
             Connection conn = DriverManager.getConnection(path);
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, pokemon.getPokemon());
@@ -71,7 +71,7 @@ public class DAOMySQLImpl implements DAO {
     public ArrayList<Pokemon> updatePokemon(Long id, Pokemon pokemon) {
         String sql = "UPDATE Pokedex SET pokemon=?, name=?, description=?, type1=?, type2=? WHERE pokemonID=?";
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.relique.jdbc.csv.CsvDriver");
             Connection conn = DriverManager.getConnection(path);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, pokemon.getPokemon());
@@ -95,7 +95,7 @@ public class DAOMySQLImpl implements DAO {
     public ArrayList<Pokemon> deletePokemon(Long id) {
         String sql = "DELETE FROM Pokedex WHERE pokemonID=?";
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.relique.jdbc.csv.CsvDriver");
             Connection conn = DriverManager.getConnection(path);
             Statement s = conn.createStatement();
             PreparedStatement pstmt = conn.prepareStatement(sql);

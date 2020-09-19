@@ -24,33 +24,95 @@ public class PokedexController {
     private PokedexMapper pokedexMapper;
 
     private DAO sqlite = factory.getDAO(Database.SQLITE);
+    
+    private DAO mysql = factory.getDAO(Database.MYSQL);
 
     @RequestMapping(value="/sqlite/pokedex", method = RequestMethod.GET)
-    public ArrayList<Pokemon> getPokedex() {
+    public ArrayList<Pokemon> getSqlitePokedex() {
         final ArrayList<Pokemon> pokedex = sqlite.getPokedex();
         return this.pokedexMapper.mapPokedex(pokedex);
     }
 
     @RequestMapping(value="/sqlite/pokedex/{id}", method = RequestMethod.GET)
-    public Pokemon getPokemon(@PathVariable Long id) {
+    public Pokemon getSqlitePokemon(@PathVariable Long id) {
         final Pokemon pokemon = sqlite.getPokemon(id);
         return this.pokedexMapper.mapPokemon(pokemon);
     }
 
     @RequestMapping(value="/sqlite/pokedex", method = RequestMethod.POST)
-    public ArrayList<Pokemon> createPokemon(@RequestBody Pokemon pokemon) {
+    public ArrayList<Pokemon> createSqlitePokemon(@RequestBody Pokemon pokemon) {
         final ArrayList<Pokemon> pokedex = sqlite.createPokemon(pokemon);
         return this.pokedexMapper.mapPokedex(pokedex);
     }
 
     @RequestMapping(value="/sqlite/pokedex/{id}", method = RequestMethod.PUT)
-    public ArrayList<Pokemon> updatePokemon(@PathVariable Long id, @RequestBody Pokemon pokemon) {
+    public ArrayList<Pokemon> updateSqlitePokemon(@PathVariable Long id, @RequestBody Pokemon pokemon) {
         final ArrayList<Pokemon> pokedex = sqlite.updatePokemon(id, pokemon);
         return this.pokedexMapper.mapPokedex(pokedex);
     }
 
     @RequestMapping(value="/sqlite/pokedex/{id}", method = RequestMethod.DELETE)
-    public ArrayList<Pokemon> deletePokemon(@PathVariable Long id) {
+    public ArrayList<Pokemon> deleteSqlitePokemon(@PathVariable Long id) {
+        final ArrayList<Pokemon> pokedex = sqlite.deletePokemon(id);
+        return this.pokedexMapper.mapPokedex(pokedex);
+    }
+
+    @RequestMapping(value="/mysql/pokedex", method = RequestMethod.GET)
+    public ArrayList<Pokemon> getMySqlPokedex() {
+        final ArrayList<Pokemon> pokedex = sqlite.getPokedex();
+        return this.pokedexMapper.mapPokedex(pokedex);
+    }
+
+    @RequestMapping(value="/mysql/pokedex/{id}", method = RequestMethod.GET)
+    public Pokemon getMySqlPokemon(@PathVariable Long id) {
+        final Pokemon pokemon = sqlite.getPokemon(id);
+        return this.pokedexMapper.mapPokemon(pokemon);
+    }
+
+    @RequestMapping(value="/mysql/pokedex", method = RequestMethod.POST)
+    public ArrayList<Pokemon> createMySqlPokemon(@RequestBody Pokemon pokemon) {
+        final ArrayList<Pokemon> pokedex = sqlite.createPokemon(pokemon);
+        return this.pokedexMapper.mapPokedex(pokedex);
+    }
+
+    @RequestMapping(value="/mysql/pokedex/{id}", method = RequestMethod.PUT)
+    public ArrayList<Pokemon> updateMySqlPokemon(@PathVariable Long id, @RequestBody Pokemon pokemon) {
+        final ArrayList<Pokemon> pokedex = sqlite.updatePokemon(id, pokemon);
+        return this.pokedexMapper.mapPokedex(pokedex);
+    }
+
+    @RequestMapping(value="/mysql/pokedex/{id}", method = RequestMethod.DELETE)
+    public ArrayList<Pokemon> deleteMySqlPokemon(@PathVariable Long id) {
+        final ArrayList<Pokemon> pokedex = sqlite.deletePokemon(id);
+        return this.pokedexMapper.mapPokedex(pokedex);
+    }
+
+    @RequestMapping(value="/csv/pokedex", method = RequestMethod.GET)
+    public ArrayList<Pokemon> getCSVPokedex() {
+        final ArrayList<Pokemon> pokedex = sqlite.getPokedex();
+        return this.pokedexMapper.mapPokedex(pokedex);
+    }
+
+    @RequestMapping(value="/csv/pokedex/{id}", method = RequestMethod.GET)
+    public Pokemon getCSVPokemon(@PathVariable Long id) {
+        final Pokemon pokemon = sqlite.getPokemon(id);
+        return this.pokedexMapper.mapPokemon(pokemon);
+    }
+
+    @RequestMapping(value="/csv/pokedex", method = RequestMethod.POST)
+    public ArrayList<Pokemon> createCSVPokemon(@RequestBody Pokemon pokemon) {
+        final ArrayList<Pokemon> pokedex = sqlite.createPokemon(pokemon);
+        return this.pokedexMapper.mapPokedex(pokedex);
+    }
+
+    @RequestMapping(value="/csv/pokedex/{id}", method = RequestMethod.PUT)
+    public ArrayList<Pokemon> updateCSVPokemon(@PathVariable Long id, @RequestBody Pokemon pokemon) {
+        final ArrayList<Pokemon> pokedex = sqlite.updatePokemon(id, pokemon);
+        return this.pokedexMapper.mapPokedex(pokedex);
+    }
+
+    @RequestMapping(value="/csv/pokedex/{id}", method = RequestMethod.DELETE)
+    public ArrayList<Pokemon> deleteCSVPokemon(@PathVariable Long id) {
         final ArrayList<Pokemon> pokedex = sqlite.deletePokemon(id);
         return this.pokedexMapper.mapPokedex(pokedex);
     }
