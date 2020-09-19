@@ -22,7 +22,7 @@ public class DAOSQLiteImpl implements DAO {
 
             while (rs.next()) {
                 list.add(generate(rs));
-            }
+            } 
         } catch (SQLException | ClassNotFoundException err) {
             err.printStackTrace();
         }
