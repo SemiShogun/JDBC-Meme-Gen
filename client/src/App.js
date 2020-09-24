@@ -1,33 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useRef } from 'react';
+import Axios from 'axios';
 import './App.css';
 import Form from "./components/Form";
 import Cards from "./components/Cards";
 import soundfile from './audio/Theme.mp3';
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
+import AddIcon from '@material-ui/icons/Add';
 import DatabaseMenu from "./components/DatabaseMenu";
+import MusicBar from "./components/MusicBar";
 
 function App() {
     const [pokedex, setPokedex] = useState([]);
-    const [pokemons, setPokemons] = useState([]);
-    const [newPokemon, setNewPokemon] = useState('');
-    const [newName, setNewName] = useState('');
-    const [newDescription, setNewDescription] = useState('');
-    const [newType1, setNewType1] = useState('');
-    const [newType2, setNewType2] = useState('');
+    const [allPokemon, setAllPokemon] = useState([]);
+    const [request, setRequest] = useState([]);
+    const [openForm, setOpenForm] = useState(false);
     const [chosenDB, setChosenDB] = useState('sqlite');
+    const pokemonFieldRef = useRef();
+    const nameFieldRef = useRef();
+    const descriptionFieldRef = useRef();
+    const type1FieldRef = useRef();
+    const type2FieldRef = useRef();
 
     let audio = new Audio(soundfile);
+    let path = `/api/${chosenDB}/pokedex`;
 
     useEffect(() => {
         retrieveValues();
-        axios
+        Axios
             .get('https://pokeapi.co/api/v2/pokemon?limit=149')
             .then(res => {
-                setPokemons(res.data.results);
+                setAllPokemon(res.data.results);
             })
             .catch(err => {
                 console.log(err);
@@ -36,16 +39,7 @@ function App() {
 
     useEffect(() => {
         retrieveValues();
-        axios
-            .get('https://pokeapi.co/api/v2/pokemon?limit=149')
-            .then(res => {
-                setPokemons(res.data.results);
-            })
-            .catch(err => {
-                console.log(err);
-            });
     }, [chosenDB]);
-
 
     function playAudio() {
         audio.play();
@@ -55,39 +49,60 @@ function App() {
         audio.pause();
     }
 
-    const pokemonHandler = event => {
-        event.preventDefault();
-        setNewPokemon(event.target.value);
-    }
-
-    const nameHandler = event => {
-        event.preventDefault();
-        setNewName(event.target.value);
-    }
-
-    const descriptionHandler = event => {
-        event.preventDefault();
-        setNewDescription(event.target.value);
-    }
-
-    const type1Handler = event => {
-        event.preventDefault();
-        setNewType1(event.target.value);
-    }
-
-    const type2Handler = event => {
-        event.preventDefault();
-        setNewType2(event.target.value);
-    }
-
     const onChangeDatabaseType = event => {
         event.preventDefault();
         setChosenDB(event.target.value);
     }
 
+    const deletePokemon = pokemon => {
+        if (window.confirm(`Are you sure you want to delete ${pokemon.name}?`)) {
+            console.log(`${path}/${pokemon.pokemonID}`);
+            Axios
+                .delete(`${path}/${pokemon.pokemonID}`)
+                .then(res => {
+                    setPokedex(res.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+        console.log("Pokemon deletion cancelled.");
+    }
+
+    const editPokemon = pokemon => {
+        console.log(`${path}/${pokemon.pokemonID}`);
+        setRequest({
+            path: `${path}/${pokemon.pokemonID}`,
+            type: "PUT",
+            pokemon: pokemon.pokemon,
+            name: pokemon.name,
+            description: pokemon.description,
+            type1: pokemon.type1,
+            type2: pokemon.type2
+        });
+        setOpenForm(true);
+    }
+
+    const addPokemon = () => {
+        setRequest({
+            path: `${path}`,
+            type: "POST",
+            pokemon: "",
+            name: "",
+            description: "",
+            type1: "",
+            type2: ""
+        });
+        setOpenForm(true);
+    }
+
+    const closeForm = () => {
+        setOpenForm(false);
+    }
+
     const retrieveValues = () => {
-        axios
-            .get(`/api/${chosenDB}/pokedex`)
+        Axios
+            .get(`${path}`)
             .then(res => {
                 setPokedex(res.data);
             })
@@ -99,41 +114,21 @@ function App() {
     const handleSubmit = event => {
         event.preventDefault();
 
-        const pokemon = {
-            pokemon: newPokemon,
-            name: newName,
-            description: newDescription,
-            type1: newType1,
-            type2: newType2
-        }
+        // onChangePokemonPicture(pokemonFieldRef);
 
-        axios.post(`/api/${chosenDB}/pokedex`, pokemon)
+        Axios({
+            method: request.type,
+            url: request.path,
+            data: {
+                pokemon: pokemonFieldRef.current.value,
+                name: nameFieldRef.current.value,
+                description: descriptionFieldRef.current.value,
+                type1: type1FieldRef.current.value,
+                type2: type2FieldRef.current.value
+            }
+        })
             .then(res => {
                 setPokedex(res.data);
-                setNewPokemon('');
-                setNewName('');
-                setNewDescription('');
-                setNewType1('');
-                setNewType2('');
-            });
-    }
-
-    const deletePokemon = pokemonID => {
-        axios
-            .delete(`/api/${chosenDB}/pokedex/${pokemonID}`)
-            .then(res => {
-                setPokedex(res.data)
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-
-    const updatePokemon = (pokemonID, pokemon) => {
-        axios
-            .put(`/api/${chosenDB}/pokedex/${pokemonID}`, pokemon)
-            .then(res => {
-                setPokedex(res.data)
             })
             .catch(err => {
                 console.log(err);
@@ -144,25 +139,23 @@ function App() {
     <div className="App">
         <Grid container spacing={1} justify="space-around">
             <Grid spacing={2} justify="center" alignItems="center">
-                <h1>Music</h1>
-                <Button type="submit" onClick={playAudio} variant="contained" color="primary" style={{margin: 10}}>
-                    <PlayArrowIcon/>
-                </Button>
-                <Button type="submit" onClick={pauseAudio} variant="contained" color="primary" style={{margin: 10}}>
-                    <PauseIcon/>
-                </Button>
+                <MusicBar playAudio={playAudio} pauseAudio={pauseAudio} />
                 <DatabaseMenu onChangeDatabaseType={onChangeDatabaseType}/>
             </Grid>
             <Grid spacing={2} justify="center">
-                <Form submit={handleSubmit} pokemons={pokemons} pokemon={newPokemon} onChangePokemonHandler={pokemonHandler} name={newName}
-                      onChangeNameHandler={nameHandler} description={newDescription} onChangeDescriptionHandler={descriptionHandler}
-                      type1={newType1} onChangeType1Handler={type1Handler} type2={newType2} onChangeType2Handler={type2Handler}/>
+                <h1>Create a pokemon</h1>
+                <Button onClick={addPokemon} variant="outlined" color="primary">
+                    <AddIcon/>
+                </Button>
+                <Form handleSubmit={handleSubmit} openForm={openForm} closeForm={closeForm} request={request}
+                      addPokemon={addPokemon} allPokemon={allPokemon} pokemonFieldRef={pokemonFieldRef}
+                      nameFieldRef={nameFieldRef} descriptionFieldRef={descriptionFieldRef}
+                      type1FieldRef={type1FieldRef} type2FieldRef={type2FieldRef} />
             </Grid>
         </Grid>
 
-
       <h1>Pokedex</h1>
-        <Cards pokedex={pokedex} deletePokemon={deletePokemon} updatePokemon={updatePokemon}/>
+        <Cards pokedex={pokedex} deletePokemon={deletePokemon} editPokemon={editPokemon} handleSubmit={handleSubmit}/>
     </div>
   );
 }

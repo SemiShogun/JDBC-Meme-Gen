@@ -7,15 +7,30 @@ import java.sql.*;
 import java.util.ArrayList;
 
 @Repository
-public class DAOCSVImpl implements DAO {
+public class DAOCSVImpl implements DAO, DAOAccess {
 
-    private String path = "jdbc:relique:csv:src/main/resources/pokedex.csv";
+    private String path = "jdbc:hsqldb:file:src/main/resources/excel/hsqldb";
+
+    @Override
+    public void setupDB() {
+        try {
+            Connection conn = DriverManager.getConnection(path);
+            Statement s = conn.createStatement();
+            s.execute("DROP TABLE IF EXISTS pokedex");
+            s.execute("CREATE TEXT TABLE pokedex (pokemonID int IDENTITY, " +
+                    "pokemon varchar(100), name varchar(100), description varchar(100), " +
+                    "type1 varchar(100), type2 varchar(100), image varchar(100))");
+            s.execute("SET TABLE pokedex SOURCE 'pokedex.csv;ignore_first=true;fs=\\semi'");
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+    }
 
     @Override
     public ArrayList<Pokemon> getPokedex() {
+
         ArrayList<Pokemon> list = new ArrayList<Pokemon>();
         try {
-            Class.forName("org.relique.jdbc.csv.CsvDriver");
             Connection conn = DriverManager.getConnection(path);
             Statement s = conn.createStatement();
             ResultSet rs = s.executeQuery("SELECT * FROM Pokedex");
@@ -23,7 +38,8 @@ public class DAOCSVImpl implements DAO {
             while (rs.next()) {
                 list.add(generate(rs));
             }
-        } catch (SQLException | ClassNotFoundException err) {
+
+        } catch (SQLException err) {
             err.printStackTrace();
         }
         return list;
@@ -33,15 +49,16 @@ public class DAOCSVImpl implements DAO {
     public Pokemon getPokemon(Long id) {
         Pokemon pokemon = new Pokemon();
         try {
-            Class.forName("org.relique.jdbc.csv.CsvDriver");
             Connection conn = DriverManager.getConnection(path);
             Statement s = conn.createStatement();
             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Pokedex WHERE pokemonID = ?");
             pstmt.setLong(1, id);
             ResultSet rs = pstmt.executeQuery();
-            pokemon = generate(rs);
+            if (rs.next()) {
+                pokemon = generate(rs);
+            }
 
-        } catch (SQLException | ClassNotFoundException err) {
+        } catch (SQLException err) {
             err.printStackTrace();
         }
         return pokemon;
@@ -51,7 +68,6 @@ public class DAOCSVImpl implements DAO {
     public ArrayList<Pokemon> createPokemon(Pokemon pokemon) {
         String sql = "INSERT INTO Pokedex(pokemon,name,description,type1,type2) VALUES(?,?,?,?,?)";
         try {
-            Class.forName("org.relique.jdbc.csv.CsvDriver");
             Connection conn = DriverManager.getConnection(path);
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, pokemon.getPokemon());
@@ -61,7 +77,7 @@ public class DAOCSVImpl implements DAO {
             pstmt.setString(5, pokemon.getType2());
             pstmt.executeUpdate();
 
-        } catch (SQLException | ClassNotFoundException err) {
+        } catch (SQLException err) {
             err.printStackTrace();
         }
         return getPokedex();
@@ -71,7 +87,6 @@ public class DAOCSVImpl implements DAO {
     public ArrayList<Pokemon> updatePokemon(Long id, Pokemon pokemon) {
         String sql = "UPDATE Pokedex SET pokemon=?, name=?, description=?, type1=?, type2=? WHERE pokemonID=?";
         try {
-            Class.forName("org.relique.jdbc.csv.CsvDriver");
             Connection conn = DriverManager.getConnection(path);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, pokemon.getPokemon());
@@ -82,8 +97,6 @@ public class DAOCSVImpl implements DAO {
             pstmt.setLong(6, id);
             pstmt.executeUpdate();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -95,15 +108,12 @@ public class DAOCSVImpl implements DAO {
     public ArrayList<Pokemon> deletePokemon(Long id) {
         String sql = "DELETE FROM Pokedex WHERE pokemonID=?";
         try {
-            Class.forName("org.relique.jdbc.csv.CsvDriver");
             Connection conn = DriverManager.getConnection(path);
             Statement s = conn.createStatement();
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setLong(1, id);
             pstmt.executeUpdate();
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
