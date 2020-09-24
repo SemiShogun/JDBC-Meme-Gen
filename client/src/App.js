@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
+import DatabaseMenu from "./components/DatabaseMenu";
 
 function App() {
     const [pokedex, setPokedex] = useState([]);
@@ -17,17 +18,12 @@ function App() {
     const [newDescription, setNewDescription] = useState('');
     const [newType1, setNewType1] = useState('');
     const [newType2, setNewType2] = useState('');
+    const [chosenDB, setChosenDB] = useState('sqlite');
+
     let audio = new Audio(soundfile);
 
     useEffect(() => {
-        axios
-            .get('/api/sqlite/pokedex')
-            .then(res => {
-                setPokedex(res.data)
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        retrieveValues();
         axios
             .get('https://pokeapi.co/api/v2/pokemon?limit=149')
             .then(res => {
@@ -36,7 +32,19 @@ function App() {
             .catch(err => {
                 console.log(err);
             });
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        retrieveValues();
+        axios
+            .get('https://pokeapi.co/api/v2/pokemon?limit=149')
+            .then(res => {
+                setPokemons(res.data.results);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, [chosenDB]);
 
 
     function playAudio() {
@@ -72,6 +80,22 @@ function App() {
         setNewType2(event.target.value);
     }
 
+    const onChangeDatabaseType = event => {
+        event.preventDefault();
+        setChosenDB(event.target.value);
+    }
+
+    const retrieveValues = () => {
+        axios
+            .get(`/api/${chosenDB}/pokedex`)
+            .then(res => {
+                setPokedex(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     const handleSubmit = event => {
         event.preventDefault();
 
@@ -83,7 +107,7 @@ function App() {
             type2: newType2
         }
 
-        axios.post(`/api/sqlite/pokedex`, pokemon )
+        axios.post(`/api/${chosenDB}/pokedex`, pokemon)
             .then(res => {
                 setPokedex(res.data);
                 setNewPokemon('');
@@ -96,7 +120,7 @@ function App() {
 
     const deletePokemon = pokemonID => {
         axios
-            .delete(`/api/sqlite/pokedex/${pokemonID}`)
+            .delete(`/api/${chosenDB}/pokedex/${pokemonID}`)
             .then(res => {
                 setPokedex(res.data)
             })
@@ -107,7 +131,7 @@ function App() {
 
     const updatePokemon = (pokemonID, pokemon) => {
         axios
-            .put(`/api/sqlite/pokedex/${pokemonID}`, pokemon)
+            .put(`/api/${chosenDB}/pokedex/${pokemonID}`, pokemon)
             .then(res => {
                 setPokedex(res.data)
             })
@@ -127,6 +151,7 @@ function App() {
                 <Button type="submit" onClick={pauseAudio} variant="contained" color="primary" style={{margin: 10}}>
                     <PauseIcon/>
                 </Button>
+                <DatabaseMenu onChangeDatabaseType={onChangeDatabaseType}/>
             </Grid>
             <Grid spacing={2} justify="center">
                 <Form submit={handleSubmit} pokemons={pokemons} pokemon={newPokemon} onChangePokemonHandler={pokemonHandler} name={newName}

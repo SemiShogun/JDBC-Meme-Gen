@@ -1,0 +1,8 @@
+"name","type","length","leftDigits","rightDigits"
+"pokemonID","INTEGER","2","2","0"
+"pokemon","STRING","25","0","0"
+"name","STRING","21","0","0"
+"description","STRING","639","0","0"
+"type1","STRING","12","0","0"
+"type2","STRING","9","0","0"
+"image","STRING","0","0","0"

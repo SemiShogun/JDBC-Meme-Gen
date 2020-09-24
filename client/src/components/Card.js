@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function OutlinedCard({ pokemon, deletePokemon, updatePokemon }) {
+export default function OutlinedCard({ pokemon, pokemons, deletePokemon, updatePokemon }) {
     const classes = useStyles();
     const [updatedPokemon, setUpdatedPokemon] = useState(pokemon.pokemon);
     const [updatedName, setUpdatedName] = useState(pokemon.name);

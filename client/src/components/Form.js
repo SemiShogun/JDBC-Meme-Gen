@@ -40,6 +40,7 @@ const Form = (props) => {
                     <FormControl>
                         <InputLabel id="demo-simple-select-helper-label">Pokemon</InputLabel>
                         <Select
+                            name="pokemon"
                             id="demo-simple-select-helper"
                             onChange={props.onChangePokemonHandler}
                             style={{ width: 400 }}>
@@ -54,6 +55,7 @@ const Form = (props) => {
                 </div>
                 <div>
                     <TextField
+                        name="name"
                         label="Name"
                         type="text"
                         value={props.name}
@@ -63,6 +65,7 @@ const Form = (props) => {
                 </div>
                 <div>
                     <TextField
+                        name="description"
                         label="Description"
                         type="text"
                         multiline
@@ -76,6 +79,7 @@ const Form = (props) => {
                     <FormControl>
                         <InputLabel id="demo-simple-select-helper-label">Type1</InputLabel>
                         <Select
+                            name="type1"
                             id="demo-simple-select-helper"
                             onChange={props.onChangeType1Handler}
                             style={{ width: 400 }}>
@@ -92,6 +96,7 @@ const Form = (props) => {
                     <FormControl>
                         <InputLabel id="demo-simple-select-helper-label">Type2</InputLabel>
                         <Select
+                            name="type2"
                             id="demo-simple-select-helper"
                             onChange={props.onChangeType2Handler}
                             style={{ width: 400 }}>
