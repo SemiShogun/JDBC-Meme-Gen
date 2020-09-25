@@ -15,6 +15,7 @@ public class Pokemon {
     private String description;
     private String type1;
     private String type2;
+    private String image;
 
     public Pokemon() {
         super();
@@ -67,4 +68,13 @@ public class Pokemon {
     public void setType2(String type2) {
         this.type2 = type2;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
 }

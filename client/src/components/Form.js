@@ -46,6 +46,7 @@ const Form = (props) => {
                                 name="pokemon"
                                 id="demo-simple-select-helper"
                                 defaultValue={props.request.pokemon}
+                                onChange={props.onChangeChosenPokemon}
                                 inputRef={props.pokemonFieldRef}
                                 style={{ width: 400 }}>
                                 {props.allPokemon.map(pokemon => (
@@ -56,6 +57,7 @@ const Form = (props) => {
                             </Select>
                             <FormHelperText>Choose your pokemon</FormHelperText>
                         </FormControl>
+                        <img src={props.image}/>
                         <TextField
                             name="name"
                             label="Name"

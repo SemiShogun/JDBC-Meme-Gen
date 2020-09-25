@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import UpdateIcon from '@material-ui/icons/Update';
+import CardMedia from "@material-ui/core/CardMedia";
 
 const useStyles = makeStyles({
     root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles({
     },
     pos: {
         marginBottom: 12,
-    },
+    }
 });
 
 export default function OutlinedCard({ pokemon, deletePokemon, editPokemon }) {
@@ -37,8 +38,9 @@ export default function OutlinedCard({ pokemon, deletePokemon, editPokemon }) {
                 <Typography variant="h7" component="h2">
                     {pokemon.name}
                 </Typography>
+                <img src={pokemon.type2} alt=""/>
                 <Typography className={classes.pos} color="textSecondary">
-                    {pokemon.type1} {pokemon.type2}
+                    {pokemon.type1}
                 </Typography>
                 <Typography variant="body2" component="p">
                     {pokemon.description}

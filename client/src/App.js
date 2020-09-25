@@ -16,7 +16,9 @@ function App() {
     const [request, setRequest] = useState([]);
     const [openForm, setOpenForm] = useState(false);
     const [chosenDB, setChosenDB] = useState('sqlite');
-    const pokemonFieldRef = useRef();
+    const [image, setimage] = useState('');
+    const [chosenPokemon, setChosenPokemon] = useState('');
+    const pokemonFieldRef = useState();
     const nameFieldRef = useRef();
     const descriptionFieldRef = useRef();
     const type1FieldRef = useRef();
@@ -41,6 +43,20 @@ function App() {
         retrieveValues();
     }, [chosenDB]);
 
+    useEffect(() => {
+        console.log(chosenPokemon);
+        Axios
+            .get(`https://pokeapi.co/api/v2/pokemon/${chosenPokemon}`)
+            .then(res => {
+                setimage(res.data.sprites.front_default)
+                console.log(image);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        console.log("Change detected")
+    }, [pokemonFieldRef])
+
     function playAudio() {
         audio.play();
     }
@@ -52,6 +68,10 @@ function App() {
     const onChangeDatabaseType = event => {
         event.preventDefault();
         setChosenDB(event.target.value);
+    }
+
+    const onChangeChosenPokemon = event => {
+        setChosenPokemon(event.target.value);
     }
 
     const deletePokemon = pokemon => {
@@ -78,7 +98,8 @@ function App() {
             name: pokemon.name,
             description: pokemon.description,
             type1: pokemon.type1,
-            type2: pokemon.type2
+            type2: pokemon.type2,
+            image: pokemon.image
         });
         setOpenForm(true);
     }
@@ -91,7 +112,8 @@ function App() {
             name: "",
             description: "",
             type1: "",
-            type2: ""
+            type2: "",
+            image: ""
         });
         setOpenForm(true);
     }
@@ -105,6 +127,7 @@ function App() {
             .get(`${path}`)
             .then(res => {
                 setPokedex(res.data);
+                console.log(res.data);
             })
             .catch(err => {
                 console.log(err);
@@ -114,8 +137,6 @@ function App() {
     const handleSubmit = event => {
         event.preventDefault();
 
-        // onChangePokemonPicture(pokemonFieldRef);
-
         Axios({
             method: request.type,
             url: request.path,
@@ -124,7 +145,8 @@ function App() {
                 name: nameFieldRef.current.value,
                 description: descriptionFieldRef.current.value,
                 type1: type1FieldRef.current.value,
-                type2: type2FieldRef.current.value
+                type2: type2FieldRef.current.value,
+                image: image
             }
         })
             .then(res => {
@@ -148,9 +170,9 @@ function App() {
                     <AddIcon/>
                 </Button>
                 <Form handleSubmit={handleSubmit} openForm={openForm} closeForm={closeForm} request={request}
-                      addPokemon={addPokemon} allPokemon={allPokemon} pokemonFieldRef={pokemonFieldRef}
-                      nameFieldRef={nameFieldRef} descriptionFieldRef={descriptionFieldRef}
-                      type1FieldRef={type1FieldRef} type2FieldRef={type2FieldRef} />
+                      image={image} addPokemon={addPokemon} allPokemon={allPokemon}
+                      pokemonFieldRef={pokemonFieldRef} nameFieldRef={nameFieldRef} descriptionFieldRef={descriptionFieldRef}
+                      type1FieldRef={type1FieldRef} type2FieldRef={type2FieldRef} onChangeChosenPokemon={onChangeChosenPokemon}/>
             </Grid>
         </Grid>
 

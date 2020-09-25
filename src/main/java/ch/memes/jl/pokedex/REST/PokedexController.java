@@ -1,7 +1,6 @@
 package ch.memes.jl.pokedex.REST;
 
 import ch.memes.jl.pokedex.Data.DAO.DAO;
-import ch.memes.jl.pokedex.Data.DAO.DAOSQLiteImpl;
 import ch.memes.jl.pokedex.Data.Database;
 import ch.memes.jl.pokedex.Data.Entity.Pokemon;
 import ch.memes.jl.pokedex.Data.Factory;
@@ -13,9 +12,6 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping(path = "/api", produces = "application/json;charset=UTF-8")
 public class PokedexController {
-
-    @Autowired
-    private DAOSQLiteImpl daosqLiteImpl;
 
     @Autowired
     private Factory factory = new Factory();

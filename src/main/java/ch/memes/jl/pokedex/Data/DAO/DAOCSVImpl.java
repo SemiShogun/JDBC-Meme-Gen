@@ -64,9 +64,10 @@ public class DAOCSVImpl implements DAO, DAOAccess {
         return pokemon;
     }
 
+
     @Override
     public ArrayList<Pokemon> createPokemon(Pokemon pokemon) {
-        String sql = "INSERT INTO Pokedex(pokemon,name,description,type1,type2) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Pokedex(pokemon,name,description,type1,type2,image) VALUES(?,?,?,?,?,?)";
         try {
             Connection conn = DriverManager.getConnection(path);
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -75,6 +76,7 @@ public class DAOCSVImpl implements DAO, DAOAccess {
             pstmt.setString(3, pokemon.getDescription());
             pstmt.setString(4, pokemon.getType1());
             pstmt.setString(5, pokemon.getType2());
+            pstmt.setString(6, pokemon.getImage());
             pstmt.executeUpdate();
 
         } catch (SQLException err) {
@@ -85,7 +87,7 @@ public class DAOCSVImpl implements DAO, DAOAccess {
 
     @Override
     public ArrayList<Pokemon> updatePokemon(Long id, Pokemon pokemon) {
-        String sql = "UPDATE Pokedex SET pokemon=?, name=?, description=?, type1=?, type2=? WHERE pokemonID=?";
+        String sql = "UPDATE Pokedex SET pokemon=?, name=?, description=?, type1=?, type2=?, image=? WHERE pokemonID=?";
         try {
             Connection conn = DriverManager.getConnection(path);
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -94,7 +96,8 @@ public class DAOCSVImpl implements DAO, DAOAccess {
             pstmt.setString(3, pokemon.getDescription());
             pstmt.setString(4, pokemon.getType1());
             pstmt.setString(5, pokemon.getType2());
-            pstmt.setLong(6, id);
+            pstmt.setString(6, pokemon.getImage());
+            pstmt.setLong(7, id);
             pstmt.executeUpdate();
 
         } catch (SQLException throwables) {
@@ -103,6 +106,7 @@ public class DAOCSVImpl implements DAO, DAOAccess {
 
         return getPokedex();
     }
+
 
     @Override
     public ArrayList<Pokemon> deletePokemon(Long id) {
@@ -129,6 +133,7 @@ public class DAOCSVImpl implements DAO, DAOAccess {
         pokemon.setDescription(entry.getString("description"));
         pokemon.setType1(entry.getString("type1"));
         pokemon.setType2(entry.getString("type2"));
+        pokemon.setImage(entry.getString("image"));
         return pokemon;
     }
 }
